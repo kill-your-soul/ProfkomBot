@@ -1,6 +1,7 @@
 class User:
     def __init__(self, id) -> None:
         self.id = id
+        self.prove = None
 
     def __str__(self) -> str:
         return f"{self.name}\n{self.bday}\n{self.group}\n{self.learn}\n{self.addr}\n{self.number}"
@@ -22,3 +23,6 @@ class User:
 
     def set_number(self, number) -> None:
         self.number = number
+
+    def set_prove(self, prove) -> None:
+        self.prove = prove
