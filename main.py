@@ -122,12 +122,12 @@ async def check(m: Message):
         if user.prove == "3":
             user.set_group(m.text)
         if user.prove == "4":
-            user.set_learn(m.text)
+            user.set_learn(m.text) 
         if user.prove == "5":
             user.set_addres(m.text)
         if user.prove == "6":
             user.set_number(m.text)
-        bot.state_dispenser.set(m.peer_id, Branch.LS, user=user)
+        await bot.state_dispenser.set(m.peer_id, Branch.LS, user=user)
     else:
         user.set_number(m.text)
     keyboard = (
