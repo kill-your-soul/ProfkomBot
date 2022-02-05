@@ -1,7 +1,3 @@
-import keyword
-from re import M
-from sre_parse import State
-from unittest import TestCase
 from docxtpl import DocxTemplate
 from vkbottle import BaseStateGroup, DocMessagesUploader
 from vkbottle import Keyboard, Text
