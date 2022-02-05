@@ -1,10 +1,12 @@
 import keyword
+from re import M
 from sre_parse import State
 from unittest import TestCase
 from docxtpl import DocxTemplate
 from vkbottle import BaseStateGroup, DocMessagesUploader
 from vkbottle import Keyboard, Text
 from vkbottle.bot import Bot, Message
+from vkbottle.dispatch.rules.base import AttachmentTypeRule
 import os
 from user import User
 
@@ -25,6 +27,7 @@ class Branch(BaseStateGroup):
     LS = 8
     CHECK = 9
     PROVE = 10
+    PDF = 11
 
 
 async def docx(context):
@@ -144,7 +147,21 @@ async def check(m: Message):
 async def yes_or_not(m: Message):
     user = m.state_peer.payload["user"]
     if m.text == "Да":
-        pass
+        context = {
+        "name": user.name,
+        "bday": user.bday,
+        "group": user.group,
+        "learn": user.learn,
+        "addr": user.addr,
+        "number": user.number,
+        }
+        await docx(context)
+        doc_to_send = await DocMessagesUploader(bot.api).upload(
+        f"{user.name}.docx", f"{user.name}.docx", peer_id=m.peer_id
+        )
+        await m.answer("Полдела сделано, осталось - распечатать, поставить подпись и отправить обратно в формате PDF. Мы с нетерпением ждем отсканированный документ.",attachment=doc_to_send)
+        os.remove(f"{user.name}.docx")
+        # await bot.state_dispenser.set(m.peer_id, Branch.PDF)
     if m.text == "Нет":
         keyboard = (
             Keyboard(inline=False, one_time=True)
@@ -181,6 +198,15 @@ async def prove(m: Message):
         await m.answer("Введите исправленный вариант")
     await bot.state_dispenser.set(m.peer_id, Branch.LS, user=user)
 
+
+@bot.on.private_message(AttachmentTypeRule("doc"))
+async def pdf(m: Message):
+    # print(m)
+    # await m.answer("1")
+    if m.attachments[0].doc.ext != 'pdf':
+        await m.answer("Произошла ошибка, формат заявления не верен. Отправь, пожалуйста, повторно, но использую PDF-файл.")
+    else:
+        await m.answer("Заявление находится на рассмотрении. В ближайшее время модератор осуществит проверку.")
 
 if __name__ == "__main__":
     bot.run_forever()
