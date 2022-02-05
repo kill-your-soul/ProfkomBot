@@ -161,7 +161,7 @@ async def yes_or_not(m: Message):
         )
         await m.answer("Полдела сделано, осталось - распечатать, поставить подпись и отправить обратно в формате PDF. Мы с нетерпением ждем отсканированный документ.",attachment=doc_to_send)
         os.remove(f"{user.name}.docx")
-        # await bot.state_dispenser.set(m.peer_id, Branch.PDF)
+        await bot.state_dispenser.set(m.peer_id, Branch.PDF)
     if m.text == "Нет":
         keyboard = (
             Keyboard(inline=False, one_time=True)
@@ -199,7 +199,7 @@ async def prove(m: Message):
     await bot.state_dispenser.set(m.peer_id, Branch.LS, user=user)
 
 
-@bot.on.private_message(AttachmentTypeRule("doc"))
+@bot.on.private_message(AttachmentTypeRule("doc"), state=Branch.PDF)
 async def pdf(m: Message):
     # print(m)
     # await m.answer("1")
