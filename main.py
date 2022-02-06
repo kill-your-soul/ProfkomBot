@@ -98,7 +98,7 @@ async def learn(m: Message):
 async def addres(m: Message):
     user = m.state_peer.payload["user"]
     user.set_learn(m.text)
-    await m.answer("Укажи адрес проживания в формате: город, улица, дом, квартира")
+    await m.answer("Укажи адрес проживания в Петербурге формате: г. Санкт-Петербург, улица, дом, квартира")
     await bot.state_dispenser.set(m.peer_id, Branch.NUMBER, user=user)
 
 
