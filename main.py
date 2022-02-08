@@ -1,3 +1,4 @@
+from datetime import datetime
 from docxtpl import DocxTemplate
 from vkbottle import BaseStateGroup, DocMessagesUploader
 from vkbottle import Keyboard, Text
@@ -142,6 +143,21 @@ async def check(m: Message):
 @bot.on.private_message(state=Branch.CHECK)
 async def yes_or_not(m: Message):
     user = m.state_peer.payload["user"]
+    months = {
+        1: "января",
+        2: "февраля",
+        3: "марта",
+        4: "апреля",
+        5: "мая",
+        6: "июня",
+        7: "июля",
+        8: "августа",
+        9: "сентября",
+        10: "октября",
+        11: "ноября",
+        12: "декабря",
+    }
+
     if m.text == "Да":
         context = {
         "name": user.name,
@@ -150,6 +166,9 @@ async def yes_or_not(m: Message):
         "learn": user.learn,
         "addr": user.addr,
         "number": user.number,
+        "date": datetime.today().day,
+        "month": months[datetime.today().month],
+
         }
         await docx(context)
         doc_to_send = await DocMessagesUploader(bot.api).upload(
