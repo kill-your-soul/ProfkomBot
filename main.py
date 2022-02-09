@@ -107,7 +107,7 @@ async def addres(m: Message):
 async def number(m: Message):
     user = m.state_peer.payload["user"]
     user.set_addres(m.text)
-    await m.answer("И последний шаг - введи свой контактный номер телефона.")
+    await m.answer("И последний шаг - введи свой контактный номер телефона. Обратите внимение на формат: 89219072414")
     await bot.state_dispenser.set(m.peer_id, Branch.LS, user=user)
 
 
