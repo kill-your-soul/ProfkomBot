@@ -8,7 +8,7 @@ import os
 from user import User
 
 bot = Bot(
-    "361fc265c17a1ab14033481d3f05f1dd809349788f378adf529ee32652c5eaabc3d21505f99d8746068d2"
+    os.environ['TOKEN']
 )
 
 
