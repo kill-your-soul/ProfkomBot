@@ -1,9 +1,10 @@
 from datetime import datetime
 from docxtpl import DocxTemplate
+from vkbottle.bot import rules
 from vkbottle import BaseStateGroup, DocMessagesUploader
 from vkbottle import Keyboard, Text
 from vkbottle.bot import Bot, Message
-from vkbottle.dispatch.rules.base import AttachmentTypeRule
+# from vkbottle.dispatch.rules.base import AttachmentTypeRule
 import os
 from user import User
 
@@ -214,7 +215,9 @@ async def prove(m: Message):
     await bot.state_dispenser.set(m.peer_id, Branch.LS, user=user)
 
 
-@bot.on.private_message(AttachmentTypeRule("doc"), state=Branch.PDF)
+# @bot.on.private_message(rules.AttachmentTypeRule("doc"))
+
+@bot.on.private_message(rules.AttachmentTypeRule("doc"), state=Branch.PDF)
 async def pdf(m: Message):
     # print(m)
     # await m.answer("1")
